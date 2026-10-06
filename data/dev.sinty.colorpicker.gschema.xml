@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="dev.sinty.colorpicker" path="/dev/sinty/colorpicker/">
+    <key name="palette-size" type="i">
+      <default>8</default>
+      <range min="5" max="12"/>
+      <summary>Colors taken from an image</summary>
+      <description>How many dominant colors are extracted when a palette is made from an image.</description>
+    </key>
+    <key name="export-format" type="s">
+      <choices>
+        <choice value="gpl"/>
+        <choice value="ase"/>
+        <choice value="css"/>
+        <choice value="json"/>
+      </choices>
+      <default>'gpl'</default>
+      <summary>Palette export format</summary>
+      <description>The file format proposed first when a palette is exported.</description>
+    </key>
+    <key name="vision" type="s">
+      <choices>
+        <choice value="none"/>
+        <choice value="protanopia"/>
+        <choice value="deuteranopia"/>
+        <choice value="tritanopia"/>
+        <choice value="achromatopsia"/>
+      </choices>
+      <default>'none'</default>
+      <summary>Simulated color vision</summary>
+      <description>The color vision deficiency simulated on the image and its palette.</description>
+    </key>
+    <key name="contrast-level" type="s">
+      <choices>
+        <choice value="aa"/>
+        <choice value="aaa"/>
+      </choices>
+      <default>'aa'</default>
+      <summary>Contrast level to reach</summary>
+      <description>The WCAG level the contrast fix aims for.</description>
+    </key>
+    <key name="contrast-large-text" type="b">
+      <default>false</default>
+      <summary>Fix contrast for large text</summary>
+      <description>Whether the contrast fix uses the lower requirement for large text.</description>
+    </key>
+    <key name="contrast-adjust" type="s">
+      <choices>
+        <choice value="text"/>
+        <choice value="background"/>
+      </choices>
+      <default>'text'</default>
+      <summary>Color changed by the contrast fix</summary>
+      <description>Whether the contrast fix changes the text color or the background.</description>
+    </key>
+    <key name="last-image" type="s">
+      <default>''</default>
+      <summary>Last image</summary>
+      <description>The image a palette was last made from, opened again at start.</description>
+    </key>
+    <key name="last-view" type="s">
+      <default>'color'</default>
+      <summary>Last view</summary>
+      <description>The view shown when Color Picker was last used.</description>
+    </key>
+    <key name="copy-format" type="s">
+      <choices>
+        <choice value="hex"/>
+        <choice value="rgb"/>
+        <choice value="hsl"/>
+        <choice value="hsv"/>
+        <choice value="cmyk"/>
+        <choice value="lab"/>
+        <choice value="lch"/>
+        <choice value="oklch"/>
+      </choices>
+      <default>'hex'</default>
+      <summary>Format copied outside the app</summary>
+      <description>The format used when a color is copied from the quick settings tile, the overview widget or the search.</description>
+    </key>
+    <key name="panel-button" type="b">
+      <default>false</default>
+      <summary>Show a button in the top bar</summary>
+      <description>Whether the desktop shows a Pick a Color button in the top bar.</description>
+    </key>
+  </schema>
+</schemalist>

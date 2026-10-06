@@ -1,0 +1,9 @@
+src/app.vala
+src/window.vala
+src/wheel.vala
+src/portal.vala
+src/image.vala
+src/vision.vala
+src/export.vala
+src/search.vala
+src/plugin/plugin.vala

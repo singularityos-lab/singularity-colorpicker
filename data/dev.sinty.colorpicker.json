@@ -1,0 +1,62 @@
+{
+    "schema-id": "dev.sinty.colorpicker",
+    "settings": [
+        {
+            "key": "palette-size",
+            "label": "Colors From an Image",
+            "subtitle": "How many dominant colors a palette from an image has",
+            "type": "int",
+            "widget": "spin",
+            "min": 5,
+            "max": 12
+        },
+        {
+            "key": "export-format",
+            "label": "Export Format",
+            "subtitle": "The format proposed first when saving a palette",
+            "type": "string",
+            "widget": "combo",
+            "options": [
+                { "id": "gpl", "label": "GIMP Palette" },
+                { "id": "ase", "label": "Adobe Swatch Exchange" },
+                { "id": "css", "label": "CSS Custom Properties" },
+                { "id": "json", "label": "JSON" }
+            ]
+        },
+        {
+            "key": "copy-format",
+            "label": "Copy Format",
+            "subtitle": "The format copied from the tile, the widget and the search",
+            "type": "string",
+            "widget": "combo",
+            "options": [
+                { "id": "hex", "label": "Hex" },
+                { "id": "rgb", "label": "RGB" },
+                { "id": "hsl", "label": "HSL" },
+                { "id": "hsv", "label": "HSV" },
+                { "id": "cmyk", "label": "CMYK" },
+                { "id": "lab", "label": "CIELAB" },
+                { "id": "lch", "label": "LCH" },
+                { "id": "oklch", "label": "OKLCH" }
+            ]
+        },
+        {
+            "key": "panel-button",
+            "label": "Button in the Top Bar",
+            "subtitle": "Pick a color from the top bar of the desktop",
+            "type": "boolean",
+            "widget": "switch"
+        },
+        {
+            "key": "contrast-level",
+            "label": "Contrast Fix Level",
+            "subtitle": "The WCAG level a suggested color must reach",
+            "type": "string",
+            "widget": "combo",
+            "options": [
+                { "id": "aa", "label": "AA" },
+                { "id": "aaa", "label": "AAA" }
+            ]
+        }
+    ]
+}

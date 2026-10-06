@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=dev.sinty.colorpicker
+Exec=@bindir@/singularity-colorpicker --gapplication-service

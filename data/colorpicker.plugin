@@ -1,0 +1,8 @@
+[Plugin]
+Module=colorpicker
+Name=Color Picker
+Description=Pick a color from the quick settings, the top bar or the dock, and keep recent colors in the overview
+Authors=Singularity Team
+Copyright=Copyright © 2025 Singularity Team
+Website=https://sinty.dev
+X-Singularity-App=dev.sinty.colorpicker
