@@ -35,6 +35,7 @@ namespace Singularity.Apps.ColorPicker {
         private Button clear_button;
         private Button pick_bubble;
         private Button copy_bubble;
+        private Button share_bubble;
         private Overlay overlay;
         private Label? toast;
         private uint toast_id;
@@ -104,6 +105,7 @@ namespace Singularity.Apps.ColorPicker {
             pick_bubble = add_bubble_icon ("color-select-symbolic", _("Pick a Color (Ctrl+P)"), () => pick_color ());
             add_bubble_icon ("document-edit-symbolic", _("Enter a Color (Ctrl+L)"), () => enter_color ());
             copy_bubble = add_bubble_icon ("edit-copy-symbolic", _("Copy Hex (Ctrl+Shift+C)"), () => copy_format (Format.HEX));
+            share_bubble = add_bubble_icon ("singularity-share-symbolic", _("Share"), () => Singularity.Share.text (this, current.to_hex (false, upper_hex), _("Color")));
 
             add_actions ();
             history.changed.connect (fill_history);
@@ -704,6 +706,7 @@ namespace Singularity.Apps.ColorPicker {
             var menu = new ContextMenu (anchor);
             menu.add_item (_("Use This Color"), "color-select-symbolic", () => apply_color (c, true));
             menu.add_item (_("Copy Hex"), "edit-copy-symbolic", () => copy_text (c.to_hex (false, upper_hex)));
+            menu.add_item (_("Share…"), "singularity-share-symbolic", () => Singularity.Share.text (this, c.to_hex (false, upper_hex), _("Color")));
             menu.add_item (_("Use as Contrast Background"), "object-flip-horizontal-symbolic", () => {
                 contrast_bg = c.copy ();
                 update_contrast ();
@@ -753,6 +756,7 @@ namespace Singularity.Apps.ColorPicker {
             bool on_color = main && view_stack.visible_child_name == "color";
             switcher.visible = main;
             copy_bubble.visible = on_color;
+            share_bubble.visible = on_color;
             bool has_palette = on_color || (on_image_view () && image != null);
             set_enabled ("export-palette", has_palette);
             set_enabled ("palette-to-history", has_palette);
