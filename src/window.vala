@@ -707,6 +707,12 @@ namespace Singularity.Apps.ColorPicker {
             menu.add_item (_("Use This Color"), "color-select-symbolic", () => apply_color (c, true));
             menu.add_item (_("Copy Hex"), "edit-copy-symbolic", () => copy_text (c.to_hex (false, upper_hex)));
             menu.add_item (_("Share…"), "singularity-share-symbolic", () => Singularity.Share.text (this, c.to_hex (false, upper_hex), _("Color")));
+            if (Singularity.Collab.Client.installed ()) {
+                menu.add_item (_("Send to…"), "document-send-symbolic", () => {
+                    string hex = c.to_hex (false, upper_hex);
+                    Singularity.Collab.send_to (anchor, "Color", hex, hex, hex, (person) => show_toast (_("Sent to %s").printf (person.name)));
+                });
+            }
             menu.add_item (_("Use as Contrast Background"), "object-flip-horizontal-symbolic", () => {
                 contrast_bg = c.copy ();
                 update_contrast ();
@@ -1376,7 +1382,7 @@ namespace Singularity.Apps.ColorPicker {
             dlg.present ();
         }
 
-        private void show_toast (string text) {
+        public void show_toast (string text) {
             if (toast == null) {
                 toast = new Label ("");
                 toast.add_css_class ("colorpicker-toast");

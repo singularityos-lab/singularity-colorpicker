@@ -40,7 +40,7 @@ shared_module('colorpicker',
 )
 install_data('data/colorpicker.plugin', install_dir: plugin_dir)
 
-install_data('data/capabilities/dev.sinty.ColorPicker1.ini',
+install_data('data/capabilities/dev.sinty.ColorPicker1.ini', 'data/capabilities/dev.sinty.Collab.Color1.ini',
   install_dir: get_option('datadir') / 'singularity' / 'capabilities'
 )
 
