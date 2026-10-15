@@ -263,6 +263,14 @@ void test_export_ase () {
         assert (hand.names[0] == "Rd");
         check_hex (hand.colors[0], "#ff0000");
         check_hex (hand.colors[1], "#808080");
+        uint8[] broken = {
+            'A', 'S', 'E', 'F', 0, 1, 0, 0, 0, 0, 0, 1,
+            0, 1, 0, 0, 0, 26, 0, 3, 0xD8, 0, 0, 0x41, 0xDC, 0, 'R', 'G', 'B', ' ',
+            0x3F, 0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
+        };
+        var odd = PaletteFile.read_ase (new Bytes (broken));
+        assert (odd.names[0].validate ());
+        assert (odd.names[0] == "\xef\xbf\xbd\xef\xbf\xbd");
         uint8[] cut = d[0:d.length - 9];
         try {
             PaletteFile.read_ase (new Bytes (cut));

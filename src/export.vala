@@ -390,7 +390,10 @@ namespace Singularity.Apps.ColorPicker {
                     if (u >= 0xD800 && u < 0xDC00 && i + 1 < count) {
                         uint16 low = u16 ();
                         i++;
-                        sb.append_unichar ((unichar) (0x10000 + ((u - 0xD800) << 10) + (low - 0xDC00)));
+                        if (low >= 0xDC00 && low < 0xE000) sb.append_unichar ((unichar) (0x10000 + ((u - 0xD800) << 10) + (low - 0xDC00)));
+                        else sb.append_unichar (0xFFFD);
+                    } else if (u >= 0xD800 && u < 0xE000) {
+                        sb.append_unichar (0xFFFD);
                     } else {
                         sb.append_unichar ((unichar) u);
                     }
