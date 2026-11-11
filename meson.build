@@ -26,7 +26,7 @@ core = files('src/color.vala', 'src/named.vala', 'src/portal.vala', 'src/vision.
   'src/export.vala', 'src/fix.vala')
 
 executable('singularity-colorpicker',
-  core + files('src/wheel.vala', 'src/image.vala', 'src/window.vala', 'src/search.vala', 'src/colors_bus.vala', 'src/app.vala'),
+  core + files('src/wheel.vala', 'src/image.vala', 'src/window.vala', 'src/search.vala', 'src/colors_bus.vala', 'src/agent_intents.vala', 'src/app.vala'),
   dependencies: [gtk_dep, gee_dep, json_dep, gio_dep, math_dep, libsingularity_dep],
   install: true
 )

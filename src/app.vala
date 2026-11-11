@@ -62,6 +62,7 @@ namespace Singularity.Apps.ColorPicker {
         protected override void startup () {
             base.startup ();
             history = new History ();
+            ColorPickerIntents.install (this);
             DirUtils.create_with_parents (Path.get_dirname (history.path), 0700);
             try {
                 history_monitor = File.new_for_path (history.path).monitor_file (FileMonitorFlags.NONE);
