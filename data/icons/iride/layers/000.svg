@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="236" height="236" viewBox="0 0 236 236" fill="none"><defs><linearGradient id="drop" x1="30" y1="170" x2="70" y2="222" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#ff6f61" />
+    <stop offset="1" stop-color="#c2185b" />
+  </linearGradient>
+  <linearGradient id="drop_back" x1="30" y1="170" x2="70" y2="222" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#a3243f" />
+    <stop offset="1" stop-color="#6d0f45" />
+  </linearGradient>
+  <radialGradient id="drop_bloom" cx="42" cy="190" r="22" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="white" stop-opacity="0.65" />
+    <stop offset="1" stop-color="white" stop-opacity="0" />
+  </radialGradient>
+  <clipPath id="drop_clip">
+    <path d="M50 168 C58 182 70 194 70 206 C70 217 61 224 50 224 C39 224 30 217 30 206 C30 194 42 182 50 168 Z" />
+  </clipPath>
+  <filter id="shadow" x="0" y="0" width="236" height="236" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#33051f" flood-opacity="0.45" /></filter>
+</defs><g transform="translate(4 -10)" filter="url(#shadow)">
+  <path d="M50 172 C58 186 70 198 70 210 C70 221 61 228 50 228 C39 228 30 221 30 210 C30 198 42 186 50 172 Z" fill="url(#drop_back)" />
+  <path d="M50 168 C58 182 70 194 70 206 C70 217 61 224 50 224 C39 224 30 217 30 206 C30 194 42 182 50 168 Z" fill="url(#drop)" />
+  <g clip-path="url(#drop_clip)">
+    <circle cx="42" cy="190" r="22" fill="url(#drop_bloom)" />
+  </g>
+</g>
+
+</svg>
