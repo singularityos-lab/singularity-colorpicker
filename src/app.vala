@@ -2,7 +2,7 @@ using Gtk;
 
 namespace Singularity.Apps.ColorPicker {
 
-    public class ColorPickerApp : Singularity.Application {
+    public class ColorPickerApp : Singularity.Application, Singularity.Migration.Migratable {
         public History history;
         public GLib.Settings settings;
         private FileMonitor? history_monitor;
@@ -188,6 +188,49 @@ namespace Singularity.Apps.ColorPicker {
             activate ();
             var w = get_active_window () as ColorPickerWindow;
             if (w != null && files.length > 0) w.open_file (files[0]);
+        }
+
+        private const string[] MOVED_KEYS = { "vision", "palette-size", "contrast-level", "contrast-large-text", "contrast-adjust" };
+
+        public Variant save_model () {
+            var d = new VariantDict ();
+            foreach (unowned string key in MOVED_KEYS) d.insert_value (key, settings.get_value (key));
+            return d.end ();
+        }
+
+        public async void restore_model (Variant model) throws Error {
+            var d = new VariantDict (model);
+            foreach (unowned string key in MOVED_KEYS) {
+                var v = d.lookup_value (key, null);
+                if (v != null && v.is_of_type (settings.get_value (key).get_type ()) && !v.equal (settings.get_value (key))) settings.set_value (key, v);
+            }
+        }
+
+        public string window_kind (Gtk.Window w) {
+            return (w is ColorPickerWindow) ? "colorpicker" : "";
+        }
+
+        public Variant save_window (Gtk.Window w) {
+            return ((ColorPickerWindow) w).save_migration ();
+        }
+
+        public string[] files () {
+            string[] list = {};
+            foreach (var w in get_windows ()) {
+                string? path = (w is ColorPickerWindow) ? ((ColorPickerWindow) w).image_path () : null;
+                if (path != null) list += Singularity.Migration.portable_path (File.new_for_path (path));
+            }
+            return list;
+        }
+
+        public async Gtk.Window? rebuild_window (string kind, Variant data) throws Error {
+            if (kind != "colorpicker") return null;
+            foreach (var old in get_windows ().copy ()) {
+                if (old is ColorPickerWindow) old.destroy ();
+            }
+            var w = new ColorPickerWindow (this, data);
+            yield w.restore_migration (data);
+            return w;
         }
 
         private const string CSS = """

@@ -80,7 +80,7 @@ namespace Singularity.Apps.ColorPicker {
             public Label ratio;
         }
 
-        public ColorPickerWindow (ColorPickerApp app) {
+        public ColorPickerWindow (ColorPickerApp app, Variant? moved = null) {
             Object (application: app);
             this.app = app;
             history = app.history;
@@ -89,7 +89,7 @@ namespace Singularity.Apps.ColorPicker {
             set_default_size (1000, 780);
             set_title (_("Color Picker"));
             state_path = Path.build_filename (Environment.get_user_config_dir (), "singularity", "colorpicker.ini");
-            bool has_state = load_state ();
+            bool has_state = moved != null ? adopt_state (moved) : load_state ();
 
             stack = new Stack ();
             stack.transition_type = StackTransitionType.CROSSFADE;
@@ -1429,6 +1429,69 @@ namespace Singularity.Apps.ColorPicker {
             } catch (Error e) {
             }
             return true;
+        }
+
+        private bool adopt_state (Variant moved) {
+            var d = new VariantDict (moved);
+            var color = d.lookup_value ("color", VariantType.STRING);
+            if (color != null) current = Color.from_hex (color.get_string ()) ?? current;
+            var background = d.lookup_value ("background", VariantType.STRING);
+            if (background != null) contrast_bg = Color.from_hex (background.get_string ()) ?? contrast_bg;
+            var palette = d.lookup_value ("palette", VariantType.STRING);
+            if (palette != null) harmony = Harmony.from_id (palette.get_string ());
+            var upper = d.lookup_value ("uppercase-hex", VariantType.BOOLEAN);
+            if (upper != null) upper_hex = upper.get_boolean ();
+            return true;
+        }
+
+        public string? image_path () {
+            return image != null ? image.path : null;
+        }
+
+        public Variant save_migration () {
+            var d = new VariantDict ();
+            d.insert_value ("page", new Variant.string (stack.visible_child_name));
+            d.insert_value ("view", new Variant.string (view_stack.visible_child_name));
+            d.insert_value ("color", new Variant.string (current.to_hex (true)));
+            d.insert_value ("background", new Variant.string (contrast_bg.to_hex (true)));
+            d.insert_value ("palette", new Variant.string (harmony.id ()));
+            d.insert_value ("uppercase-hex", new Variant.boolean (upper_hex));
+            d.insert_value ("wheel", new Variant ("(ddd)", wheel.hue, wheel.saturation, wheel.brightness));
+            string? path = image_path ();
+            if (path != null) d.insert_value ("image", new Variant.string (Singularity.Migration.portable_path (File.new_for_path (path))));
+            return d.end ();
+        }
+
+        public async void restore_migration (Variant data) {
+            var d = new VariantDict (data);
+            var hsv = d.lookup_value ("wheel", new VariantType ("(ddd)"));
+            if (hsv != null) {
+                double h, s, v;
+                hsv.get ("(ddd)", out h, out s, out v);
+                wheel.set_hsv (h, s, v);
+                apply_color (current, false);
+            }
+            uint serial = ++load_serial;
+            var saved_image = d.lookup_value ("image", VariantType.STRING);
+            if (saved_image != null) {
+                var file = Singularity.Migration.local_file (saved_image.get_string ());
+                try {
+                    var img = yield LoadedImage.load_file (file, file.get_path () == pasted_path () ? _("Pasted Image") : null);
+                    if (serial == load_serial) {
+                        set_image (img);
+                        if (img.path != null) settings.set_string ("last-image", img.path);
+                    }
+                } catch (Error e) {
+                    image_stack.visible_child_name = "empty";
+                }
+            } else {
+                close_image ();
+                image_stack.visible_child_name = "empty";
+            }
+            var view = d.lookup_value ("view", VariantType.STRING);
+            if (view != null && view_stack.get_child_by_name (view.get_string ()) != null) view_stack.visible_child_name = view.get_string ();
+            var page = d.lookup_value ("page", VariantType.STRING);
+            if (page != null && stack.get_child_by_name (page.get_string ()) != null) show_page (page.get_string ());
         }
 
         private void schedule_save () {
