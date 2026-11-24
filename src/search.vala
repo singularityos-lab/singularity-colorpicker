@@ -46,7 +46,7 @@ namespace Singularity.Apps.ColorPicker {
 
         public override void launch_search (string[] terms, uint32 timestamp) {
             var c = parse_query (terms);
-            app.activate ();
+            app.show_window ();
             var w = app.get_active_window () as ColorPickerWindow;
             if (w != null && c != null) w.show_color (c);
         }

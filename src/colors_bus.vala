@@ -25,7 +25,7 @@ namespace Singularity.Apps.ColorPicker {
             var c = Color.from_hex (payload.strip ());
             if (c == null) throw new IOError.INVALID_DATA ("not a color");
             app.history.add (c);
-            app.activate ();
+            app.show_window ();
             var w = app.get_active_window () as ColorPickerWindow;
             if (w != null) w.show_toast (_("%s sent you %s").printf (from, c.to_hex (false)));
         }
